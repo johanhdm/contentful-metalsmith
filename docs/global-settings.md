@@ -16,7 +16,10 @@ You can find these in your [app](https://app.contentful.com) at `APIs -> Content
       "entry_extension": "md",
       "contentful": {
         "content_type": "2wKn6yEnZewu2SCCkus4as"
-      }
+      },
+      "autoLayout": {
+         "layoutFileType": "html"
+     }
     }
   }
 }
@@ -57,7 +60,7 @@ For using the [Content Delivery API](https://www.contentful.com/developers/docs/
 
 ### `entry_key` *(optional)*
 
-If you want to transform Contentful data into pages you can specify a `entry_key` which will be used to replace the key of all file objects with the stored Contentful key path. You must specify a path to the file as if it was referenced from your `src` directory and exclude the extension. 
+If you want to transform Contentful data into pages you can specify a `entry_key` which will be used to replace the key of all file objects with the stored Contentful key path. You must specify a path to the file as if it was referenced from your `src` directory and exclude the extension.
 
 For example, if you specify `entry_key`: `_key`, then create a Contentful entry with a `_key` property set to `pages/index` a file will be referenced in Metalsmith with `pages/index.md` (assuming you specify `entry_extension` as `md`)
 
@@ -114,6 +117,28 @@ For example, find your five latest entries so you can include them in various te
       "limit": 5,
       "order": "sys.createdAt"
     }
+  },
+  // ...
+}
+```
+
+In templates you can then access `common.latest` to get the raw results of the above query:
+
+```
+The first latest post's title, in handlebars syntax: {{ common.latest.items.0.fields.title }}
+```
+
+### `autoLayout` *(optional)*
+
+Contentful pages can be automatically mapped to a layout with the same name as the content type in Contentful.
+
+The layoutFileType variable needs is mandatory and controls which file type the layout files are using, typically html. 
+
+```javascript
+{
+  // ...
+  "autoLayout": {
+      "layoutFileType": "html",
   },
   // ...
 }
